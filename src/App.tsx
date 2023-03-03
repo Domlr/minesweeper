@@ -1,13 +1,12 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import Game from "./components/Game";
 
-function App() {
+const App: React.FC = () => {
   return (
     <div className="App">
-      <header className="App-header">helo</header>
+      <Game />
     </div>
   );
-}
+};
 
 export default App;
