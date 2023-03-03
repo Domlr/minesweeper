@@ -132,7 +132,6 @@ export const initBoardData = (height: number, width: number, mines: number) => {
   return data;
 };
 
-// looks for neighbouring cells and returns them
 export function traverseBoard(
   x: number,
   y: number,
@@ -141,45 +140,24 @@ export function traverseBoard(
   height: number
 ): CellType[] {
   const el: CellType[] = [];
+  const directions = [
+    [-1, 0], // up
+    [-1, 1], // top right
+    [0, 1], // right
+    [1, 1], // bottom right
+    [1, 0], // down
+    [1, -1], // bottom left
+    [0, -1], // left
+    [-1, -1], // top left
+  ];
 
-  //up
-  if (x > 0) {
-    el.push(data[x - 1][y]);
-  }
+  for (const [dx, dy] of directions) {
+    const newX = x + dx;
+    const newY = y + dy;
 
-  //down
-  if (x < height - 1) {
-    el.push(data[x + 1][y]);
-  }
-
-  //left
-  if (y > 0) {
-    el.push(data[x][y - 1]);
-  }
-
-  //right
-  if (y < width - 1) {
-    el.push(data[x][y + 1]);
-  }
-
-  // top left
-  if (x > 0 && y > 0) {
-    el.push(data[x - 1][y - 1]);
-  }
-
-  // top right
-  if (x > 0 && y < width - 1) {
-    el.push(data[x - 1][y + 1]);
-  }
-
-  // bottom right
-  if (x < height - 1 && y < width - 1) {
-    el.push(data[x + 1][y + 1]);
-  }
-
-  // bottom left
-  if (x < height - 1 && y > 0) {
-    el.push(data[x + 1][y - 1]);
+    if (newX >= 0 && newX < height && newY >= 0 && newY < width) {
+      el.push(data[newX][newY]);
+    }
   }
 
   return el;
