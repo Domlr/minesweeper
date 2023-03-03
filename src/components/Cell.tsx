@@ -1,6 +1,6 @@
 import React from "react";
 
-interface CellProps {
+export interface CellProps {
   value: {
     isRevealed: boolean;
     isMine: boolean;
