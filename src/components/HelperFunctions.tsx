@@ -1,45 +1,32 @@
 import { CellType, cellData } from "./CellTypes";
 
 export function getMines(data: CellType[][]) {
-  let mineArray: CellType[] = [];
-
-  data.map((datarow) => {
-    datarow.map((dataitem) => {
-      if (dataitem.isMine) {
-        mineArray.push(dataitem);
-      }
-    });
-  });
-
-  return mineArray;
+  return getCellsWithFilter(data, (cell) => cell.isMine);
 }
 
 export function getFlags(data: CellType[][]) {
-  let mineArray: CellType[] = [];
-
-  data.map((datarow) => {
-    datarow.map((dataitem) => {
-      if (dataitem.isFlagged) {
-        mineArray.push(dataitem);
-      }
-    });
-  });
-
-  return mineArray;
+  return getCellsWithFilter(data, (cell) => cell.isFlagged);
 }
 
 export function getHidden(data: CellType[][]) {
-  let mineArray: CellType[] = [];
+  return getCellsWithFilter(data, (cell) => !cell.isRevealed);
+}
+
+function getCellsWithFilter(
+  data: CellType[][],
+  filterFunc: (cell: CellType) => boolean
+) {
+  let cellArray: CellType[] = [];
 
   data.map((datarow) => {
     datarow.map((dataitem) => {
-      if (!dataitem.isRevealed) {
-        mineArray.push(dataitem);
+      if (filterFunc(dataitem)) {
+        cellArray.push(dataitem);
       }
     });
   });
 
-  return mineArray;
+  return cellArray;
 }
 
 // get random number given a dimension
