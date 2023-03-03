@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 export interface CellProps {
   value: {
@@ -12,7 +12,7 @@ export interface CellProps {
 }
 
 const Cell: React.FC<CellProps> = ({ value, onClick, cMenu }) => {
-  const getValue = (): string | number | null => {
+  const getValue = useMemo(() => {
     if (!value.isRevealed) {
       return value.isFlagged ? "🚩" : null;
     }
@@ -23,7 +23,7 @@ const Cell: React.FC<CellProps> = ({ value, onClick, cMenu }) => {
       return null;
     }
     return value.neighbour;
-  };
+  }, [value.isRevealed, value.isFlagged, value.isMine, value.neighbour]);
 
   let className =
     "cell" +
@@ -33,7 +33,7 @@ const Cell: React.FC<CellProps> = ({ value, onClick, cMenu }) => {
 
   return (
     <div onClick={onClick} className={className} onContextMenu={cMenu}>
-      {getValue()}
+      {getValue}
     </div>
   );
 };
