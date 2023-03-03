@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { getMines, getFlags, getHidden, plantMines } from "./HelperFunctions";
-import { CellType } from "./CellTypes";
+import {
+  getMines,
+  getFlags,
+  getHidden,
+  initBoardData,
+  traverseBoard,
+} from "./HelperFunctions";
+import { CellType, cellData } from "./CellTypes";
 import Cell from "./Cell";
-
-let cellData: CellType[][] = [
-  [
-    {
-      x: 0,
-      y: 0,
-      isMine: false,
-      neighbour: 0,
-      isRevealed: false,
-      isEmpty: false,
-      isFlagged: false,
-    },
-  ],
-];
 
 type BoardProps = {
   height: number;
@@ -30,114 +22,10 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
 
   /* Helper Functions */
 
-  // Gets initial board data
-  const initBoardData = (height: number, width: number, mines: number) => {
-    let data: typeof cellData = createEmptyArray(height, width);
-    data = plantMines(data, height, width, mines);
-    data = getNeighbours(data, height, width);
-    return data;
-  };
-
   useEffect(() => {
     const data = initBoardData(height, width, mines);
     setBoardData(data);
   }, [height, width, mines]);
-
-  const createEmptyArray = (height: number, width: number) => {
-    let data: typeof cellData = [];
-
-    for (let i = 0; i < height; i++) {
-      data.push([]);
-      for (let j = 0; j < width; j++) {
-        data[i][j] = {
-          x: i,
-          y: j,
-          isMine: false,
-          neighbour: 0,
-          isRevealed: false,
-          isEmpty: false,
-          isFlagged: false,
-        };
-      }
-    }
-    return data;
-  };
-
-  // get number of neighbouring mines for each board cell
-  function getNeighbours(
-    data: CellType[][],
-    height: number,
-    width: number
-  ): CellType[][] {
-    const updatedData = [...data];
-
-    for (let i = 0; i < height; i++) {
-      for (let j = 0; j < width; j++) {
-        if (data[i][j].isMine !== true) {
-          let mine = 0;
-          const area = traverseBoard(data[i][j].x, data[i][j].y, data);
-          area.map((value) => {
-            if (value.isMine) {
-              mine++;
-            }
-          });
-          if (mine === 0) {
-            updatedData[i][j].isEmpty = true;
-          }
-          updatedData[i][j].neighbour = mine;
-        }
-      }
-    }
-
-    return updatedData;
-  }
-
-  // looks for neighbouring cells and returns them
-  function traverseBoard(x: number, y: number, data: CellType[][]): CellType[] {
-    const el: CellType[] = [];
-
-    //up
-    if (x > 0) {
-      el.push(data[x - 1][y]);
-    }
-
-    //down
-    if (x < height - 1) {
-      el.push(data[x + 1][y]);
-    }
-
-    //left
-    if (y > 0) {
-      el.push(data[x][y - 1]);
-    }
-
-    //right
-    if (y < width - 1) {
-      el.push(data[x][y + 1]);
-    }
-
-    // top left
-    if (x > 0 && y > 0) {
-      el.push(data[x - 1][y - 1]);
-    }
-
-    // top right
-    if (x > 0 && y < width - 1) {
-      el.push(data[x - 1][y + 1]);
-    }
-
-    // bottom right
-    if (x < height - 1 && y < width - 1) {
-      el.push(data[x + 1][y + 1]);
-    }
-
-    // bottom left
-    if (x < height - 1 && y > 0) {
-      el.push(data[x + 1][y - 1]);
-    }
-
-    return el;
-  }
 
   // reveals the whole board
   function revealBoard(
@@ -154,7 +42,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   }
 
   function revealEmpty(x: number, y: number, data: CellType[][]) {
-    let area = traverseBoard(x, y, data);
+    let area = traverseBoard(x, y, data, width, height);
     area.forEach((value) => {
       if (
         !value.isFlagged &&
