@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { getMines, getFlags, getHidden, plantMines } from "./HelperFunctions";
+import { CellType } from "./CellTypes";
 import Cell from "./Cell";
-
-type CellType = {
-  x: number;
-  y: number;
-  isMine: boolean;
-  neighbour: number;
-  isRevealed: boolean;
-  isEmpty: boolean;
-  isFlagged: boolean;
-};
 
 let cellData: CellType[][] = [
   [
@@ -37,56 +29,6 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   const [mineCount, setMineCount] = useState<number>(mines);
 
   /* Helper Functions */
-
-  // get mines
-  const getMines = (data: CellType[][]) => {
-    let mineArray: CellType[] = [];
-
-    data.map((datarow) => {
-      datarow.map((dataitem) => {
-        if (dataitem.isMine) {
-          mineArray.push(dataitem);
-        }
-      });
-    });
-
-    return mineArray;
-  };
-
-  // get Flags
-  const getFlags = (data: CellType[][]) => {
-    let mineArray: CellType[] = [];
-
-    data.map((datarow) => {
-      datarow.map((dataitem) => {
-        if (dataitem.isFlagged) {
-          mineArray.push(dataitem);
-        }
-      });
-    });
-
-    return mineArray;
-  };
-
-  // get Hidden cells
-  const getHidden = (data: CellType[][]) => {
-    let mineArray: CellType[] = [];
-
-    data.map((datarow) => {
-      datarow.map((dataitem) => {
-        if (!dataitem.isRevealed) {
-          mineArray.push(dataitem);
-        }
-      });
-    });
-
-    return mineArray;
-  };
-
-  // get random number given a dimension
-  const getRandomNumber = (dimension: number) => {
-    return Math.floor(Math.random() * 1000 + 1) % dimension;
-  };
 
   // Gets initial board data
   const initBoardData = (height: number, width: number, mines: number) => {
@@ -120,28 +62,6 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
     }
     return data;
   };
-
-  function plantMines(
-    data: CellType[][],
-    height: number,
-    width: number,
-    mines: number
-  ): CellType[][] {
-    let randomX: number,
-      randomY: number,
-      minesPlanted = 0;
-
-    while (minesPlanted < mines) {
-      randomX = getRandomNumber(width);
-      randomY = getRandomNumber(height);
-      if (!data[randomX][randomY].isMine) {
-        data[randomX][randomY].isMine = true;
-        minesPlanted++;
-      }
-    }
-
-    return data;
-  }
 
   // get number of neighbouring mines for each board cell
   function getNeighbours(
