@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Board from "./Board";
 import Cell, { CellValue } from "./Cell";
 
@@ -22,6 +22,10 @@ const Game: React.FC = () => {
   });
 
   const [board, setBoard] = useState<CellValue[][]>([[]]);
+
+  useEffect(() => {
+    handleReset();
+  }, []);
 
   const generateBoard = (size: number, mines: number): CellValue[][] => {
     // Create an empty board

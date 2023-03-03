@@ -28,6 +28,7 @@ const Board: React.FC<BoardProps> = ({
       />
     );
   };
+  console.log(size, "this is the size");
 
   const renderRow = (rowIndex: number) => {
     return (
@@ -40,7 +41,13 @@ const Board: React.FC<BoardProps> = ({
   };
 
   return (
-    <div className="board">
+    <div
+      className="board"
+      style={{
+        gridTemplateColumns: `repeat(${size}, 32px)`,
+        gridTemplateRows: `repeat(${size}, 32px)`,
+      }}
+    >
       {Array(size)
         .fill(null)
         .map((_, rowIndex) => renderRow(rowIndex))}

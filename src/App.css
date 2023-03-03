@@ -1,38 +1,115 @@
-.App {
-  text-align: center;
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 32px);
+  grid-template-rows: repeat(10, 32px);
+  grid-gap: 2px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.row {
+  display: flex;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.cell {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ccc;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.cell.hidden {
+  background-color: #aaa;
+}
+
+.cell.revealed {
+  background-color: #eee;
+}
+
+.cell.flagged {
+  background-color: #ccc;
+}
+
+.cell.hidden:hover {
+  background-color: #bbb;
+}
+
+.cell.flagged:hover {
+  background-color: #bbb;
+}
+
+.cell.revealed.mine {
+  background-color: #f00;
+}
+
+.cell.revealed.number1 {
+  color: #00f;
+}
+
+.cell.revealed.number2 {
+  color: #080;
+}
+
+.cell.revealed.number3 {
+  color: #f00;
+}
+
+.game {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin: 50px auto;
 }
 
-.App-link {
-  color: #61dafb;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 320px;
+  margin-bottom: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.stats {
+  display: flex;
+}
+
+.stat {
+  margin-right: 20px;
+}
+
+.reset-button {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+  border: none;
+  background-color: #ddd;
+  cursor: pointer;
+  user-select: none;
+}
+
+.reset-button:hover {
+  background-color: #ccc;
+}
+
+.game-over {
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #f00;
+}
+
+.game-won {
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #080;
 }
