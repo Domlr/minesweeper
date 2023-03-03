@@ -4,7 +4,7 @@ import {
   getFlags,
   getHidden,
   initBoardData,
-  traverseBoard,
+  pointBoundaries,
 } from "./HelperFunctions";
 import { CellType } from "./CellTypes";
 import Cell from "./Cell";
@@ -45,7 +45,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
 
   const revealEmpty = useCallback(
     (x: number, y: number, data: CellType[][]) => {
-      let area = traverseBoard(x, y, data, width, height);
+      let area = pointBoundaries(x, y, data, width, height);
       area.forEach((value) => {
         if (
           !value.isFlagged &&

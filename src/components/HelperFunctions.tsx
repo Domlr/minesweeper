@@ -56,39 +56,57 @@ export function plantMines(
   return data;
 }
 
-// get number of neighbouring mines for each board cell
 function getNeighbours(
   data: CellType[][],
   height: number,
   width: number
 ): CellType[][] {
-  const updatedData = [...data];
+  const newData: CellType[][] = [];
 
+  // Loop through each row in the data array
   for (let i = 0; i < height; i++) {
+    // Create a new row array to add to the newData array
+    const newRow: CellType[] = [];
+
+    // Loop through each cell in the row
     for (let j = 0; j < width; j++) {
-      if (data[i][j].isMine !== true) {
-        let mine = 0;
-        const area = traverseBoard(
-          data[i][j].x,
-          data[i][j].y,
-          data,
-          width,
-          height
-        );
-        area.map((value) => {
+      const cell = data[i][j];
+      const isMine = cell.isMine;
+      let mine = 0;
+
+      // If the cell isn't a mine, count the number of neighbouring mines
+      if (!isMine) {
+        const area = pointBoundaries(cell.x, cell.y, data, width, height);
+        for (const value of area) {
           if (value.isMine) {
             mine++;
           }
-        });
-        if (mine === 0) {
-          updatedData[i][j].isEmpty = true;
         }
-        updatedData[i][j].neighbour = mine;
+
+        // If the cell has no neighbouring mines, mark it as empty
+        if (mine === 0) {
+          newRow.push({
+            ...cell,
+            isEmpty: true,
+            neighbour: mine,
+          });
+        } else {
+          newRow.push({
+            ...cell,
+            isEmpty: false,
+            neighbour: mine,
+          });
+        }
+      } else {
+        newRow.push(cell);
       }
     }
+
+    // Add the new row array to the newData array
+    newData.push(newRow);
   }
 
-  return updatedData;
+  return newData;
 }
 
 export const createEmptyArray = (height: number, width: number) => {
@@ -119,7 +137,7 @@ export const initBoardData = (height: number, width: number, mines: number) => {
   return data;
 };
 
-export function traverseBoard(
+export function pointBoundaries(
   x: number,
   y: number,
   data: CellType[][],
