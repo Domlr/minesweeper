@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import Board from './Board';
 import '../../src/index.scss';
 
-export default function Game() {
-  const [height, setHeight] = useState(8);
-  const [width, setWidth] = useState(8);
-  const [mines, setMines] = useState(10);
+type GameProps = {};
+
+export default function Game(props: GameProps) {
+  const [height, setHeight] = useState<number>(8);
+  const [width, setWidth] = useState<number>(8);
+  const [mines, setMines] = useState<number>(10);
 
   return (
     <div className="game">
@@ -20,4 +22,3 @@ export default function Game() {
     </div>
   );
 }
-
