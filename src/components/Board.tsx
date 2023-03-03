@@ -6,7 +6,7 @@ import {
   initBoardData,
   traverseBoard,
 } from "./HelperFunctions";
-import { CellType, cellData } from "./CellTypes";
+import { CellType } from "./CellTypes";
 import Cell from "./Cell";
 
 type BoardProps = {
