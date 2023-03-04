@@ -171,6 +171,8 @@ export const initBoardData = (
     }
   }
 
+  console.log("this is after");
+
   // Calculate the number of neighbouring mines for each cell
   data = getNeighbours(data, height, width);
   console.log(data, "this is the data after a mine has been set");

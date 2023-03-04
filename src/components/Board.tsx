@@ -24,9 +24,17 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   /* Helper Functions */
 
   useEffect(() => {
+    if (mines >= height * width) {
+      setGameStatus("Invalid game configuration: too many mines.");
+      console.log(gameStatus);
+      return;
+    }
+  }, [height, width, mines]);
+
+  useEffect(() => {
     const data = initBoardData(height, width, mines);
     setBoardData(data);
-  }, [height, width, mines]);
+  }, [firstClick]);
 
   const revealBoard = useCallback(
     (
@@ -73,9 +81,16 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
         firstClick,
         "this is the first click mines"
       );
+
       // Plant mines on first click
       if (mineCount === mines && firstClick) {
-        const updatedDataWithMines = initBoardData(height, width, mines, x, y);
+        const updatedDataWithMines = initBoardData(
+          height,
+          width,
+          Math.min(mines, height * width - 1),
+          x,
+          y
+        );
         updatedData = updatedDataWithMines;
         setFirstClick(false);
       }
