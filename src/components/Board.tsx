@@ -19,6 +19,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   const [boardData, setBoardData] = useState<CellType[][]>([]);
   const [gameStatus, setGameStatus] = useState<string>("Game in progress");
   const [mineCount, setMineCount] = useState<number>(mines);
+  const [firstClick, setFirstClick] = useState(true);
 
   /* Helper Functions */
 
@@ -65,19 +66,31 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
 
   const handleCellClick = useCallback(
     (x: number, y: number) => {
-      // check if revealed. return if true.
-      if (boardData[x][y].isRevealed || boardData[x][y].isFlagged) return null;
+      let updatedData = [...boardData];
+      console.log(
+        mineCount,
+        mines,
+        firstClick,
+        "this is the first click mines"
+      );
+      // Plant mines on first click
+      if (mineCount === mines && firstClick) {
+        const updatedDataWithMines = initBoardData(height, width, mines, x, y);
+        updatedData = updatedDataWithMines;
+        setFirstClick(false);
+      }
+
+      // check if revealed or flagged. return if true.
+      if (updatedData[x][y].isRevealed || updatedData[x][y].isFlagged)
+        return null;
 
       // check if mine. game over if true
-      if (boardData[x][y].isMine) {
+      if (updatedData[x][y].isMine) {
         setGameStatus("You Lost.");
         revealBoard(boardData, setBoardData);
         alert("game over");
       }
 
-      const updatedData = boardData.map((datarow) =>
-        datarow.map((dataitem) => ({ ...dataitem }))
-      );
       updatedData[x][y].isFlagged = false;
       updatedData[x][y].isRevealed = true;
 
@@ -95,7 +108,16 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
       setBoardData(updatedData);
       setMineCount(mines - getFlags(updatedData).length);
     },
-    [boardData, mines, revealEmpty]
+    [
+      boardData,
+      firstClick,
+      height,
+      mines,
+      mineCount,
+      revealEmpty,
+      revealBoard,
+      width,
+    ]
   );
 
   const handleContextMenu = useCallback(

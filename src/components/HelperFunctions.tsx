@@ -129,11 +129,51 @@ export const createEmptyArray = (height: number, width: number) => {
   return data;
 };
 
-// Gets initial board data
-export const initBoardData = (height: number, width: number, mines: number) => {
-  let data: typeof cellData = createEmptyArray(height, width);
-  data = plantMines(data, height, width, mines);
+export const initBoardData = (
+  height: number,
+  width: number,
+  mines: number,
+  firstClickX?: number,
+  firstClickY?: number
+): CellType[][] => {
+  // Create 2D array with all cells unrevealed and not containing a mine
+  let data: CellType[][] = [];
+  for (let i = 0; i < height; i++) {
+    let row: CellType[] = [];
+    for (let j = 0; j < width; j++) {
+      row.push({
+        x: i,
+        y: j,
+        isMine: false,
+        isRevealed: false,
+        isFlagged: false,
+        isEmpty: false,
+        neighbour: 0,
+      });
+    }
+    data.push(row);
+  }
+
+  console.log(data, "this is the data before a mine has been set");
+
+  // Randomly add mines to the board
+  let minesPlaced = 0;
+  while (minesPlaced < mines) {
+    const randomX = Math.floor(Math.random() * height);
+    const randomY = Math.floor(Math.random() * width);
+    if (
+      !data[randomX][randomY].isMine &&
+      randomX !== firstClickX &&
+      randomY !== firstClickY
+    ) {
+      data[randomX][randomY].isMine = true;
+      minesPlaced++;
+    }
+  }
+
+  // Calculate the number of neighbouring mines for each cell
   data = getNeighbours(data, height, width);
+  console.log(data, "this is the data after a mine has been set");
   return data;
 };
 
