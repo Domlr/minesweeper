@@ -3,15 +3,23 @@
 .board {
   display: grid;
   grid-auto-flow: column;
-  height: 100vh;
+  height: 80vh;
+  width: 80%;
 }
 
 .tile {
   display: flex;
+  border-style: solid;
+  border-width: 1px;
+  border-color: $secondary-color;
+  border-radius: 7px;
 }
 
 .tile-cell-container {
   flex: 1;
+  border-style: solid;
+  border-width: 1px;
+  border-color: $secondary-color;
 }
 
 .cell-dimentions {
@@ -20,23 +28,30 @@
 }
 
 .game {
-  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .game-info {
-    background: $base-color;
+    margin-top: 100px;
+    background-color: $primary-color;
+    border-style: solid;
+    border-width: 5px;
+    border-color: $secondary-color;
     padding: 7px;
     text-align: center;
     color: #fff;
     min-height: 100px;
     border-radius: 7px;
-    .info {
-      display: block;
-      margin-top: 15px;
+
+    .information {
+      display: flex;
+      justify-content: space-evenly;
     }
   }
 
   .cell {
-    background: #7b7b7b;
+    background: $tertiary-color;
     border: 1px solid #fff;
     float: left;
     height: 100%;
@@ -52,7 +67,7 @@
   }
 
   .hidden {
-    background: #2e2829;
+    background: $primary-color;
   }
 
   .is-flag,

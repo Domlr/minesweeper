@@ -211,8 +211,13 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
       }}
     >
       <div className="game-info" style={{ gridColumn: `1/${width + 1}` }}>
-        <span className="info">Mines remaining: {mineCount}</span>
-        <h1 className="info">{gameStatus}</h1>
+        <div>
+          <h1 className="game-status">{gameStatus}</h1>
+        </div>
+        <div className="information">
+          <span className="mines">Mines remaining: {mineCount}</span>
+          <span className="timer">Time Remaining</span>
+        </div>
       </div>
       {renderBoard(boardData)}
     </div>
