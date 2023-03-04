@@ -1,17 +1,10 @@
-.board {
-  display: grid;
-  grid-template-columns: repeat(10, 32px);
-  grid-template-rows: repeat(10, 32px);
-  grid-gap: 2px;
-}
-
 .row {
   display: flex;
 }
 
 .cell {
-  width: 32px;
-  height: 32px;
+  width: 100%;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;

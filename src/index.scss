@@ -8,6 +8,7 @@ body {
   padding: 0;
   font-family: sans-serif;
   background: #f4f4f4;
+  height: 100vh;
 }
 
 .clear {
@@ -16,9 +17,7 @@ body {
 }
 
 .game {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 100%;
 
   .game-info {
     margin-bottom: 20px;
@@ -34,17 +33,13 @@ body {
     }
   }
 
-  .board {
-  }
-
   .cell {
     background: #7b7b7b;
     border: 1px solid #fff;
     float: left;
-    line-height: 45px;
-    height: 45px;
+    height: 100%;
     text-align: center;
-    width: 45px;
+    width: 100%;
     cursor: pointer;
     border-radius: 5px;
     color: #fff;

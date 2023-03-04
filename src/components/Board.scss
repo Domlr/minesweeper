@@ -1,0 +1,19 @@
+.board {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 2px;
+  height: 100vh;
+}
+
+.tile {
+  display: flex;
+}
+
+.tile-cell-container {
+  flex: 1;
+}
+
+.cell-dimentions {
+  width: 100%;
+  height: auto;
+}

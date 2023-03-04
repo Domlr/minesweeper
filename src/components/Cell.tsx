@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import "./Board.scss";
 
 export interface CellProps {
   value: {
@@ -29,11 +30,12 @@ const Cell: React.FC<CellProps> = ({ value, onClick, cMenu }) => {
     "cell" +
     (value.isRevealed ? "" : " hidden") +
     (value.isMine ? " is-mine" : "") +
-    (value.isFlagged ? " is-flag" : "");
+    (value.isFlagged ? " is-flag" : "") +
+    " cell-dimentions";
 
   return (
     <div onClick={onClick} className={className} onContextMenu={cMenu}>
-      {getValue}
+      <div style={{ height: "20px" }}>{getValue}</div>
     </div>
   );
 };

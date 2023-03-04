@@ -8,6 +8,7 @@ import {
 } from "./HelperFunctions";
 import { CellType } from "./CellTypes";
 import Cell from "./Cell";
+import "./Board.scss";
 
 type BoardProps = {
   height: number;
@@ -174,9 +175,16 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
     () =>
       (data: CellType[][]): JSX.Element[] =>
         Array.from(data, (datarow, rowIndex) => (
-          <div key={rowIndex}>
+          <div
+            style={{ gridColumn: `1/${width + 1}` }}
+            className={"tile"}
+            key={rowIndex}
+          >
             {datarow.map((dataitem, colIndex) => (
-              <div key={`${rowIndex}-${colIndex}`}>
+              <div
+                key={`${rowIndex}-${colIndex}`}
+                className={"tile-cell-container"}
+              >
                 <Cell
                   onClick={() => handleCellClick(dataitem.x, dataitem.y)}
                   cMenu={(e: React.MouseEvent) =>
@@ -195,8 +203,14 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   );
 
   return (
-    <div className="board">
-      <div className="game-info">
+    <div
+      className="board"
+      style={{
+        gridTemplateColumns: `repeat(${width})`,
+        gridTemplateRows: `repeat(${height})`,
+      }}
+    >
+      <div className="game-info" style={{ gridColumn: `1/${width + 1}` }}>
         <span className="info">Mines remaining: {mineCount}</span>
         <h1 className="info">{gameStatus}</h1>
       </div>

@@ -5,8 +5,8 @@ import "../../src/index.scss";
 type GameProps = {};
 
 export default function Game(props: GameProps) {
-  const [height, setHeight] = useState<number>(8);
-  const [width, setWidth] = useState<number>(8);
+  const [height, setHeight] = useState<number>(14);
+  const [width, setWidth] = useState<number>(14);
   const [mines, setMines] = useState<number>(10);
 
   return (
