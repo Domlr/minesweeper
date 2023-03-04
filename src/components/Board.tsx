@@ -29,12 +29,12 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
       console.log(gameStatus);
       return;
     }
-  }, [height, width, mines]);
+  }, [height, width, mines, gameStatus]);
 
   useEffect(() => {
     const data = initBoardData(height, width, mines);
     setBoardData(data);
-  }, [firstClick]);
+  }, [height, width, mines]);
 
   const revealBoard = useCallback(
     (
@@ -92,6 +92,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
           y
         );
         updatedData = updatedDataWithMines;
+        console.log(updatedData, "this is the updated data");
         setFirstClick(false);
       }
 
