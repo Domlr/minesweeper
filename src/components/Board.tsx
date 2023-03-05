@@ -16,9 +16,16 @@ type BoardProps = {
   mines: number;
 };
 
+enum GameStatus {
+  Lose = "You lost, try again?",
+  Win = "Congrats you win! Try again?",
+  InProgress = "Game in progress...",
+  InvalidParams = "Invalid game configuration: too many mines.",
+}
+
 const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   const [boardData, setBoardData] = useState<CellType[][]>([]);
-  const [gameStatus, setGameStatus] = useState<string>("Game in progress");
+  const [gameStatus, setGameStatus] = useState<string>(GameStatus.InProgress);
   const [mineCount, setMineCount] = useState<number>(mines);
   const [firstClick, setFirstClick] = useState(true);
 
@@ -26,9 +33,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
 
   useEffect(() => {
     if (mines >= height * width) {
-      setGameStatus("Invalid game configuration: too many mines.");
-      console.log(gameStatus);
-      return;
+      return setGameStatus(GameStatus.InvalidParams);
     }
   }, [height, width, mines, gameStatus]);
 
@@ -53,6 +58,14 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
     []
   );
 
+  const resetGame = useCallback(() => {
+    const data = initBoardData(height, width, mines);
+    setBoardData(data);
+    setGameStatus(GameStatus.InProgress);
+    setMineCount(mines);
+    setFirstClick(true);
+  }, [height, width, mines]);
+
   const revealEmpty = useCallback(
     (x: number, y: number, data: CellType[][]) => {
       let area = pointBoundaries(x, y, data, width, height);
@@ -76,12 +89,6 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   const handleCellClick = useCallback(
     (x: number, y: number) => {
       let updatedData = [...boardData];
-      console.log(
-        mineCount,
-        mines,
-        firstClick,
-        "this is the first click mines"
-      );
 
       // Plant mines on first click
       if (mineCount === mines && firstClick) {
@@ -93,7 +100,6 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
           y
         );
         updatedData = updatedDataWithMines;
-        console.log(updatedData, "this is the updated data");
         setFirstClick(false);
       }
 
@@ -103,9 +109,8 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
 
       // check if mine. game over if true
       if (updatedData[x][y].isMine) {
-        setGameStatus("You Lost.");
+        setGameStatus(GameStatus.Lose);
         revealBoard(boardData, setBoardData);
-        alert("game over");
       }
 
       updatedData[x][y].isFlagged = false;
@@ -117,9 +122,8 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
 
       if (getHidden(updatedData).length === mines) {
         setMineCount(0);
-        setGameStatus("You Win.");
+        setGameStatus(GameStatus.Win);
         revealBoard(boardData, setBoardData);
-        alert("You Win");
       }
 
       setBoardData(updatedData);
@@ -159,9 +163,8 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
         const FlagArray = getFlags(updatedData);
         if (JSON.stringify(mineArray) === JSON.stringify(FlagArray)) {
           setMineCount(0);
-          setGameStatus("You Win.");
+          setGameStatus(GameStatus.Win);
           revealBoard(boardData, setBoardData);
-          alert("You Win");
         }
       }
 
@@ -213,10 +216,15 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
       <div className="game-info" style={{ gridColumn: `1/${width + 1}` }}>
         <div>
           <h1 className="game-status">{gameStatus}</h1>
+          <h1 onClick={resetGame}>Restart: 🔄</h1>
         </div>
         <div className="information">
-          <span className="mines">Mines remaining: {mineCount}</span>
-          <span className="timer">Time Remaining</span>
+          <span className="mines">
+            <h2>Mines remaining: {mineCount}</h2>
+          </span>
+          <span className="timer">
+            <h2>Time Remaining</h2>
+          </span>
         </div>
       </div>
       {renderBoard(boardData)}

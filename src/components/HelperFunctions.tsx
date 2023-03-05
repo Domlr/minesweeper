@@ -154,8 +154,6 @@ export const initBoardData = (
     data.push(row);
   }
 
-  console.log(data, "this is the data before a mine has been set");
-
   // Randomly add mines to the board
   let minesPlaced = 0;
   while (minesPlaced < mines) {
@@ -171,11 +169,8 @@ export const initBoardData = (
     }
   }
 
-  console.log("this is after");
-
   // Calculate the number of neighbouring mines for each cell
   data = getNeighbours(data, height, width);
-  console.log(data, "this is the data after a mine has been set");
   return data;
 };
 
