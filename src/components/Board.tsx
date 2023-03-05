@@ -28,8 +28,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   const [gameStatus, setGameStatus] = useState<string>(GameStatus.InProgress);
   const [mineCount, setMineCount] = useState<number>(mines);
   const [firstClick, setFirstClick] = useState(true);
-
-  /* Helper Functions */
+  const [timer, setTimer] = useState<number>(0);
 
   useEffect(() => {
     if (mines >= height * width) {
@@ -41,6 +40,16 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
     const data = initBoardData(height, width, mines);
     setBoardData(data);
   }, [height, width, mines]);
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+    if (!firstClick && gameStatus === GameStatus.InProgress) {
+      intervalId = setInterval(() => {
+        setTimer((time) => time + 1);
+      }, 1000);
+    }
+    return () => clearInterval(intervalId);
+  }, [firstClick, gameStatus]);
 
   const revealBoard = useCallback(
     (
@@ -64,6 +73,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
     setGameStatus(GameStatus.InProgress);
     setMineCount(mines);
     setFirstClick(true);
+    setTimer(0);
   }, [height, width, mines]);
 
   const revealEmpty = useCallback(
@@ -89,7 +99,6 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   const handleCellClick = useCallback(
     (x: number, y: number) => {
       let updatedData = [...boardData];
-
       // Plant mines on first click
       if (mineCount === mines && firstClick) {
         const updatedDataWithMines = initBoardData(
@@ -223,7 +232,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
             <h2>Mines remaining: {mineCount}</h2>
           </span>
           <span className="timer">
-            <h2>Time Remaining</h2>
+            <h2>Time: {timer}s</h2>
           </span>
         </div>
       </div>
