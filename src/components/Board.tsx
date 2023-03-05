@@ -158,6 +158,12 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   const handleContextMenu = useCallback(
     (e: React.MouseEvent, x: number, y: number) => {
       e.preventDefault();
+
+      // Check if first click has been made
+      if (firstClick) {
+        return;
+      }
+
       let updatedData = boardData;
       let mines = mineCount;
 
@@ -185,7 +191,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
       setBoardData(updatedData);
       setMineCount(mines);
     },
-    [boardData, mineCount, revealBoard, setBoardData, setGameStatus]
+    [boardData, firstClick, mineCount, revealBoard, setBoardData, setGameStatus]
   );
 
   const renderBoard = React.useMemo(
