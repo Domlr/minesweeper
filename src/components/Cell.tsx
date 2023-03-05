@@ -12,7 +12,22 @@ export interface CellProps {
   cMenu: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
+const colors = [
+  "",
+  "blue",
+  "green",
+  "red",
+  "purple",
+  "maroon",
+  "turquoise",
+  "black",
+  "gray",
+];
+
+//This represents a single cell on the board
 const Cell: React.FC<CellProps> = ({ value, onClick, cMenu }) => {
+  // based on the value, it will render the correct text
+
   const getValue = useMemo(() => {
     if (!value.isRevealed) {
       return value.isFlagged ? "🚩" : null;
@@ -26,35 +41,7 @@ const Cell: React.FC<CellProps> = ({ value, onClick, cMenu }) => {
     return value.neighbour;
   }, [value.isRevealed, value.isFlagged, value.isMine, value.neighbour]);
 
-  const setValueColor = useMemo(() => {
-    if (value.neighbour === 1) {
-      return "blue";
-    }
-    if (value.neighbour === 2) {
-      return "green";
-    }
-    if (value.neighbour === 3) {
-      return "red";
-    }
-    if (value.neighbour === 4) {
-      return "purple";
-    }
-    if (value.neighbour === 5) {
-      return "maroon";
-    }
-    if (value.neighbour === 6) {
-      return "turquoise";
-    }
-    if (value.neighbour === 7) {
-      return "black";
-    }
-    if (value.neighbour === 8) {
-      return "gray";
-    } else {
-      return "";
-    }
-  }, [value.neighbour]);
-
+  //sets the css dynamically based on the results of the value of that cell.
   let className =
     "cell" +
     (value.isRevealed ? "" : " hidden") +
@@ -73,7 +60,8 @@ const Cell: React.FC<CellProps> = ({ value, onClick, cMenu }) => {
             value.isRevealed &&
             "2px 2px white"
           }`,
-          color: `${setValueColor}`,
+          //based on the value of neighbour, go through the array of colors and set the color on the index.
+          color: `${colors[value.neighbour]}`,
         }}
       >
         {getValue}
