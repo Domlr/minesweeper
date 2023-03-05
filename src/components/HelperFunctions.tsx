@@ -155,6 +155,7 @@ export const initBoardData = (
   return data;
 };
 
+//this function is used to calculate the valid cells around a cell
 export function pointBoundaries(
   x: number,
   y: number,
