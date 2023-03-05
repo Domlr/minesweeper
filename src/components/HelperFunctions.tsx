@@ -37,6 +37,8 @@ export const getRandomNumber = (dimension: number) => {
   return Math.floor(Math.random() * dimension);
 };
 
+// this takes in the getrandomnumber function and assignes random x and y coords. While mines planted are less than how many mines we want
+// it will keep looping through the array and assigning mines to random cells. It then returns the new data array.
 export function plantMines(
   data: CellType[][],
   height: number,
@@ -59,6 +61,9 @@ export function plantMines(
   return data;
 }
 
+//This takes in the data array and will create a new Data array. It will loop through each cell in data and check if it is a mine. If it isn't a mine
+//it will check the pointBoundaries function and count how many mines are around that cell using the data array. It will then add that number the new cell and push when
+//the row has been completed. In the very end it will return the new data array.
 function getNeighbours(
   data: CellType[][],
   height: number,
