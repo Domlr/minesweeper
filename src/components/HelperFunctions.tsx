@@ -43,18 +43,22 @@ export function plantMines(
   data: CellType[][],
   height: number,
   width: number,
-  mines: number
+  mines: number,
+  firstClickX?: number,
+  firstClickY?: number
 ): CellType[][] {
-  let randomX: number,
-    randomY: number,
-    minesPlanted = 0;
-
-  while (minesPlanted < mines) {
-    randomX = getRandomNumber(width);
-    randomY = getRandomNumber(height);
-    if (!data[randomX][randomY].isMine) {
+  // Randomly add mines to the board
+  let minesPlaced = 0;
+  while (minesPlaced < mines) {
+    const randomX = getRandomNumber(width);
+    const randomY = getRandomNumber(height);
+    if (
+      !data[randomX][randomY].isMine &&
+      randomX !== firstClickX &&
+      randomY !== firstClickY
+    ) {
       data[randomX][randomY].isMine = true;
-      minesPlanted++;
+      minesPlaced++;
     }
   }
 
@@ -117,6 +121,8 @@ function getNeighbours(
   return newData;
 }
 
+//resets the board with initial values, producing a data array. Plantmines will populate the data array with mines
+//and getNeighbours will count the number of mines around each cell pushing a newdataarray
 export const initBoardData = (
   height: number,
   width: number,
@@ -141,21 +147,8 @@ export const initBoardData = (
     }
     data.push(row);
   }
-
-  // Randomly add mines to the board
-  let minesPlaced = 0;
-  while (minesPlaced < mines) {
-    const randomX = Math.floor(Math.random() * height);
-    const randomY = Math.floor(Math.random() * width);
-    if (
-      !data[randomX][randomY].isMine &&
-      randomX !== firstClickX &&
-      randomY !== firstClickY
-    ) {
-      data[randomX][randomY].isMine = true;
-      minesPlaced++;
-    }
-  }
+  //set the mines
+  data = plantMines(data, height, width, mines, firstClickX, firstClickY);
 
   // Calculate the number of neighbouring mines for each cell
   data = getNeighbours(data, height, width);
