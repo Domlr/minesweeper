@@ -117,26 +117,6 @@ function getNeighbours(
   return newData;
 }
 
-export const createEmptyArray = (height: number, width: number) => {
-  let data: typeof cellData = [];
-
-  for (let i = 0; i < height; i++) {
-    data.push([]);
-    for (let j = 0; j < width; j++) {
-      data[i][j] = {
-        x: i,
-        y: j,
-        isMine: false,
-        neighbour: 0,
-        isRevealed: false,
-        isEmpty: false,
-        isFlagged: false,
-      };
-    }
-  }
-  return data;
-};
-
 export const initBoardData = (
   height: number,
   width: number,
