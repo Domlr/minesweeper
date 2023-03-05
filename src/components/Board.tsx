@@ -175,9 +175,10 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
       let updatedData = [...boardData];
       let mines = mineCount;
 
-      // check if already revealed
+      // check if already revealed and won't let you click
       if (updatedData[x][y].isRevealed) return;
 
+      //sets the state of the cell flag to false/true and increments/decrements the mine count
       if (updatedData[x][y].isFlagged) {
         updatedData[x][y].isFlagged = false;
         mines++;
@@ -185,7 +186,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
         updatedData[x][y].isFlagged = true;
         mines--;
       }
-
+      //it checks to see if the mines are equal to the flags and if that's the case, game over
       if (mines === 0) {
         const mineArray = getMines(updatedData);
         const FlagArray = getFlags(updatedData);
@@ -195,7 +196,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
           revealBoard(boardData, setBoardData);
         }
       }
-
+      //updates the board data
       setBoardData(updatedData);
       setMineCount(mines);
     },
@@ -207,6 +208,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
       (data: CellType[][]): JSX.Element[] =>
         data.map((datarow, rowIndex) => (
           <div
+            //sets the grid column to how many tiles there are so we could expand this game
             style={{ gridColumn: `1/${width + 1}` }}
             className={"tile"}
             key={rowIndex}
@@ -230,7 +232,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
             ))}
           </div>
         )),
-    [handleCellClick, handleContextMenu]
+    [handleCellClick, handleContextMenu, width]
   );
 
   return (
