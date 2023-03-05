@@ -143,16 +143,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
       setBoardData(updatedData);
       setMineCount(mines - getFlags(updatedData).length);
     },
-    [
-      boardData,
-      firstClick,
-      height,
-      mines,
-      mineCount,
-      revealEmpty,
-      revealBoard,
-      width,
-    ]
+    [boardData, firstClick, height, mines, revealEmpty, revealBoard, width]
   );
 
   const handleContextMenu = useCallback(
