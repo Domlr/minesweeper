@@ -17,6 +17,7 @@ type BoardProps = {
 };
 
 enum GameStatus {
+  Start = "Click a tile to start the game!",
   Lose = "You lost, try again?",
   Win = "Congrats you win! Try again?",
   InProgress = "Game in progress...",
@@ -25,7 +26,7 @@ enum GameStatus {
 
 const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   const [boardData, setBoardData] = useState<CellType[][]>([]);
-  const [gameStatus, setGameStatus] = useState<string>(GameStatus.InProgress);
+  const [gameStatus, setGameStatus] = useState<string>(GameStatus.Start);
   const [mineCount, setMineCount] = useState<number>(mines);
   const [firstClick, setFirstClick] = useState(true);
   const [timer, setTimer] = useState<number>(0);
@@ -51,6 +52,10 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
     return () => clearInterval(intervalId);
   }, [firstClick, gameStatus]);
 
+  useEffect(() => {
+    !firstClick && setGameStatus(GameStatus.InProgress);
+  }, [firstClick]);
+
   const revealBoard = useCallback(
     (
       boardData: CellType[][],
@@ -70,7 +75,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   const resetGame = useCallback(() => {
     const data = initBoardData(height, width, mines);
     setBoardData(data);
-    setGameStatus(GameStatus.InProgress);
+    setGameStatus(GameStatus.Start);
     setMineCount(mines);
     setFirstClick(true);
     setTimer(0);
