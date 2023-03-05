@@ -5,6 +5,9 @@
   grid-auto-flow: column;
   height: 80vh;
   width: 80%;
+  @media only screen and (min-width: 769px) {
+    width: 500px;
+  }
 }
 
 .tile {
@@ -43,8 +46,11 @@
     color: #fff;
     min-height: 100px;
     border-radius: 7px;
+    .game-status {
+      height: 60px;
+    }
   }
-  @media only screen and (min-width: 1200px) {
+  @media only screen and (min-width: 769px) {
     margin-top: 100px;
   }
 
