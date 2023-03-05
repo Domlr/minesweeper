@@ -12,6 +12,7 @@ export interface CellProps {
   cMenu: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
+//colors of cells that contain number of mines around them. Similar to the original minesweeper
 const colors = [
   "",
   "blue",

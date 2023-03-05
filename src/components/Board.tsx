@@ -105,7 +105,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
     (x: number, y: number) => {
       let updatedData = [...boardData];
       // Plant mines on first click
-      if (mineCount === mines && firstClick) {
+      if (firstClick) {
         const updatedDataWithMines = initBoardData(
           height,
           width,
