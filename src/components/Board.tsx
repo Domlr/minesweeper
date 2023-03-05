@@ -188,7 +188,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   const renderBoard = React.useMemo(
     () =>
       (data: CellType[][]): JSX.Element[] =>
-        Array.from(data, (datarow, rowIndex) => (
+        data.map((datarow, rowIndex) => (
           <div
             style={{ gridColumn: `1/${width + 1}` }}
             className={"tile"}
