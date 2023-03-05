@@ -31,9 +31,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   .game-info {
-    margin-top: 100px;
+    margin-top: 20px;
     margin-bottom: 10px;
     background-color: $primary-color;
     border-style: solid;
@@ -44,11 +43,14 @@
     color: #fff;
     min-height: 100px;
     border-radius: 7px;
+  }
+  @media only screen and (min-width: 1200px) {
+    margin-top: 100px;
+  }
 
-    .information {
-      display: flex;
-      justify-content: space-evenly;
-    }
+  .information {
+    display: flex;
+    justify-content: space-evenly;
   }
 
   .cell {
