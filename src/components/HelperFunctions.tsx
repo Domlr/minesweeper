@@ -1,17 +1,20 @@
 import { CellType, cellData } from "./CellTypes";
 
+//This will return an array of all cells that have mines
 export function getMines(data: CellType[][]) {
   return getCellsWithFilter(data, (cell) => cell.isMine);
 }
-
+//This will return an array of cells with flags
 export function getFlags(data: CellType[][]) {
   return getCellsWithFilter(data, (cell) => cell.isFlagged);
 }
 
+//this will return an array of all cells that are not revealed
 export function getHidden(data: CellType[][]) {
   return getCellsWithFilter(data, (cell) => !cell.isRevealed);
 }
 
+//We use this as a helper so that we can reuse the code for getMines, getFlags and getHidden by passing in the condition we want to check for
 function getCellsWithFilter(
   data: CellType[][],
   filterFunc: (cell: CellType) => boolean
@@ -31,7 +34,7 @@ function getCellsWithFilter(
 
 // get random number given a dimension
 export const getRandomNumber = (dimension: number) => {
-  return Math.floor(Math.random() * 1000 + 1) % dimension;
+  return Math.floor(Math.random() * dimension);
 };
 
 export function plantMines(
