@@ -130,7 +130,8 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
         updatedData = updatedDataWithMines;
         setFirstClick(false);
       }
-
+      //make updated data const
+      //make it so if flags are minus you can't keep adding
       // check if revealed or flagged. return if true.
       if (updatedData[x][y].isRevealed || updatedData[x][y].isFlagged)
         return null;
@@ -183,6 +184,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
         updatedData[x][y].isFlagged = false;
         mines++;
       } else {
+        if (mines === 0) return;
         updatedData[x][y].isFlagged = true;
         mines--;
       }
