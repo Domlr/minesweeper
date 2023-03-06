@@ -130,23 +130,21 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
         updatedData = updatedDataWithMines;
         setFirstClick(false);
       }
-      //make updated data const
-      //make it so if flags are minus you can't keep adding
+      const updatedDataXY = updatedData[x][y];
       // check if revealed or flagged. return if true.
-      if (updatedData[x][y].isRevealed || updatedData[x][y].isFlagged)
-        return null;
+      if (updatedDataXY.isRevealed || updatedDataXY.isFlagged) return null;
 
       // this will check and make you lost
-      if (updatedData[x][y].isMine) {
+      if (updatedDataXY.isMine) {
         setGameStatus(GameStatus.Lose);
         revealBoard(boardData, setBoardData);
       }
 
-      updatedData[x][y].isFlagged = false;
-      updatedData[x][y].isRevealed = true;
+      updatedDataXY.isFlagged = false;
+      updatedDataXY.isRevealed = true;
 
       //we check the cell to see if it's empty, then use the recursive function to check other cells
-      if (updatedData[x][y].isEmpty) {
+      if (updatedDataXY.isEmpty) {
         revealEmpty(x, y, updatedData);
       }
 
@@ -176,16 +174,18 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
       let updatedData = [...boardData];
       let mines = mineCount;
 
+      const updatedDataXY = updatedData[x][y];
+
       // check if already revealed and won't let you click
-      if (updatedData[x][y].isRevealed) return;
+      if (updatedDataXY.isRevealed) return;
 
       //sets the state of the cell flag to false/true and increments/decrements the mine count
-      if (updatedData[x][y].isFlagged) {
-        updatedData[x][y].isFlagged = false;
+      if (updatedDataXY.isFlagged) {
+        updatedDataXY.isFlagged = false;
         mines++;
       } else {
         if (mines === 0) return;
-        updatedData[x][y].isFlagged = true;
+        updatedDataXY.isFlagged = true;
         mines--;
       }
       //it checks to see if the mines are equal to the flags and if that's the case, game over
