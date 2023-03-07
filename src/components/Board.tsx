@@ -30,6 +30,12 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   const [mineCount, setMineCount] = useState<number>(mines);
   const [firstClick, setFirstClick] = useState(true);
   const [timer, setTimer] = useState<number>(0);
+  const [highestScore, setHighestScore] = useState<number>(1000);
+
+  useEffect(() => {
+    const currentHighScore = localStorage.getItem("highScore") || "1000";
+    setHighestScore(parseInt(currentHighScore));
+  }, []);
 
   // this will check if the mines are greater than the cells and set the status
   // to invalid params, however this wasn't to be an issue as I would use
@@ -54,9 +60,11 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
         setTimer((time) => time + 1);
       }, 1000);
     }
+
+    highScore(timer);
     //this will stop it in any other condition, which is updated by the gamestatus
     return () => clearInterval(intervalId);
-  }, [firstClick, gameStatus]);
+  }, [firstClick, gameStatus, highestScore]);
 
   useEffect(() => {
     //if it is the first click it will set the game to inprogress
@@ -80,6 +88,28 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
     },
     []
   );
+
+  const highScore = useCallback(
+    (timer: number) => {
+      if (
+        gameStatus !== GameStatus.Win ||
+        timer === 0 ||
+        highestScore < timer
+      ) {
+        return highScore;
+      }
+
+      setHighestScore(timer);
+      localStorage.setItem("highScore", highestScore.toString());
+      return highestScore;
+    },
+    [setHighestScore, highestScore, gameStatus]
+  );
+
+  const resetScore = () => {
+    localStorage.setItem("highScore", "1000");
+    setHighestScore(1000);
+  };
 
   //this is used to reset the game to it's initial state, to start a new game
   const resetGame = useCallback(() => {
@@ -236,7 +266,6 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
         )),
     [handleCellClick, handleContextMenu, width]
   );
-
   return (
     <div
       className="board"
@@ -248,7 +277,26 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
       <div className="game-info" style={{ gridColumn: `1/${width + 1}` }}>
         <div>
           <h1 className="game-status">{gameStatus}</h1>
-          <h1 onClick={resetGame}>Restart: 🔄</h1>
+          <div className="information">
+            <button>instructions</button>
+            <button
+              disabled={gameStatus === GameStatus.Win ? true : false}
+              onClick={resetScore}
+            >
+              Reset Score
+            </button>
+          </div>
+          <div className="information">
+            <div onClick={resetGame}>
+              <h2>Restart: </h2>
+              <h1>🔄</h1>
+            </div>
+
+            <div>
+              <h2>Highscore:</h2>
+              <h2>{highestScore === 1000 ? "---" : highestScore + "s"}</h2>
+            </div>
+          </div>
         </div>
         <div className="information">
           <span className="mines">
