@@ -9,6 +9,8 @@ import {
 import { CellType } from "./CellTypes";
 import Cell from "./Cell";
 import "./Board.scss";
+import { faRotate, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type BoardProps = {
   height: number;
@@ -31,6 +33,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   const [firstClick, setFirstClick] = useState(true);
   const [timer, setTimer] = useState<number>(0);
   const [highestScore, setHighestScore] = useState<number>(1000);
+  const [resetClicked, setResetClicked] = useState<boolean>(false);
 
   useEffect(() => {
     const currentHighScore = localStorage.getItem("highScore") || "1000";
@@ -92,21 +95,24 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
   const highScore = useCallback(
     (timer: number) => {
       if (
+        resetClicked ||
         gameStatus !== GameStatus.Win ||
         timer === 0 ||
         highestScore < timer
       ) {
-        return highScore;
+        setResetClicked(false);
+        return highestScore;
       }
 
       setHighestScore(timer);
       localStorage.setItem("highScore", highestScore.toString());
       return highestScore;
     },
-    [setHighestScore, highestScore, gameStatus]
+    [highestScore, gameStatus]
   );
 
   const resetScore = () => {
+    setResetClicked(true);
     localStorage.setItem("highScore", "1000");
     setHighestScore(1000);
   };
@@ -277,24 +283,26 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
       <div className="game-info" style={{ gridColumn: `1/${width + 1}` }}>
         <div>
           <h1 className="game-status">{gameStatus}</h1>
-          <div className="information">
-            <button>instructions</button>
-            <button
-              disabled={gameStatus === GameStatus.Win ? true : false}
-              onClick={resetScore}
-            >
-              Reset Score
-            </button>
-          </div>
+
           <div className="information">
             <div onClick={resetGame}>
               <h2>Restart: </h2>
-              <h1>🔄</h1>
+              <h1>
+                <FontAwesomeIcon icon={faRotate} />
+              </h1>
             </div>
 
             <div>
               <h2>Highscore:</h2>
-              <h2>{highestScore === 1000 ? "---" : highestScore + "s"}</h2>
+              <div>
+                <h1 style={{ display: "inline" }}>
+                  {highestScore === 1000 ? "---" : highestScore + "s"}{" "}
+                </h1>
+                <h2 className={"reset-game-icon"} onClick={resetScore}>
+                  {" "}
+                  <FontAwesomeIcon icon={faTrash} />
+                </h2>
+              </div>
             </div>
           </div>
         </div>
