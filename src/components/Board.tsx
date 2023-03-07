@@ -9,7 +9,12 @@ import {
 import { CellType } from "./CellTypes";
 import Cell from "./Cell";
 import "./Board.scss";
-import { faRotate, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faRotate,
+  faTrash,
+  faBomb,
+  faClock,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type BoardProps = {
@@ -108,7 +113,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
       localStorage.setItem("highScore", highestScore.toString());
       return highestScore;
     },
-    [highestScore, gameStatus]
+    [highestScore, gameStatus, resetClicked]
   );
 
   const resetScore = () => {
@@ -308,10 +313,14 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
         </div>
         <div className="information">
           <span className="mines">
-            <h2>Mines remaining: {mineCount}</h2>
+            <h2>
+              <FontAwesomeIcon icon={faBomb} /> : {mineCount}
+            </h2>
           </span>
           <span className="timer">
-            <h2>Time: {timer}s</h2>
+            <h2>
+              <FontAwesomeIcon icon={faClock} />: {timer}s
+            </h2>
           </span>
         </div>
       </div>
