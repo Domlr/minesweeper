@@ -33,6 +33,16 @@
 
 .reset-game-icon {
   display: inline;
+  cursor: pointer;
+}
+
+.restart-game-icon {
+  cursor: pointer;
+  transition: transform 0.7s ease-in-out;
+}
+
+.restart-game-icon:hover {
+  transform: rotate(360deg);
 }
 
 .game {

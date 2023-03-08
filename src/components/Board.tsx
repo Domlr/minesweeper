@@ -292,7 +292,7 @@ const Board: React.FC<BoardProps> = ({ height, width, mines }) => {
           <div className="information">
             <div onClick={resetGame}>
               <h2>Restart: </h2>
-              <h1>
+              <h1 className={"restart-game-icon"}>
                 <FontAwesomeIcon icon={faRotate} />
               </h1>
             </div>
