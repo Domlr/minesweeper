@@ -52,6 +52,8 @@ export function plantMines(
   while (minesPlaced < mines) {
     const randomX = getRandomNumber(width);
     const randomY = getRandomNumber(height);
+    //used to check if the miens are placed around the surrounding cells of the first click
+    //so the first click is an empty square
     const isNeighbour =
       Math.abs(randomX - firstClickX!) <= 1 &&
       Math.abs(randomY - firstClickY!) <= 1;
