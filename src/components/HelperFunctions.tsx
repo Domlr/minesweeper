@@ -52,11 +52,11 @@ export function plantMines(
   while (minesPlaced < mines) {
     const randomX = getRandomNumber(width);
     const randomY = getRandomNumber(height);
-    if (
-      !data[randomX][randomY].isMine &&
-      randomX !== firstClickX &&
-      randomY !== firstClickY
-    ) {
+    const isNeighbour =
+      Math.abs(randomX - firstClickX!) <= 1 &&
+      Math.abs(randomY - firstClickY!) <= 1;
+
+    if (!data[randomX][randomY].isMine && !isNeighbour) {
       data[randomX][randomY].isMine = true;
       minesPlaced++;
     }
